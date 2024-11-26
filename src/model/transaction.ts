@@ -23,7 +23,7 @@ class Transaction {
     }
 
     // 验证签名
-    isValid(): boolean {
+    validate(): boolean {
         if (this.from === '') {
             return true;
         }

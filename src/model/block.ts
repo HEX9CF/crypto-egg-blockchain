@@ -1,4 +1,4 @@
-import { ec, sha256 } from '../main';
+import { sha256 } from '../main';
 import { Transaction } from './transaction';
 
 class Block {
@@ -53,7 +53,7 @@ class Block {
     // 验证交易
     validateTransactions(): boolean {
         for (let t of this.transactions) {
-            if (!t.isValid())  {
+            if (!t.validate())  {
                 return false;
             }
         }
