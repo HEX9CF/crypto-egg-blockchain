@@ -1,17 +1,25 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { Key } from "@/model/key";
 
-var key: Key = new Key();
-// console.log(key.keyPair);
-// console.log(key.privateKey);
-// console.log(key.publicKey);
+const key = ref(new Key());
+
+function clickGenKey() {
+  key.value.generate();
+  console.log(key.value.keyPair);
+  console.log(key.value.privateKey);
+  console.log(key.value.publicKey);
+}
 
 </script>
 
 <template>
   <div>
-    <p>公钥：{{ key.publicKey }}</p>
-    <p>私钥：{{ key.privateKey }}</p>
+    <input type="button" value="生成密钥对" @click="clickGenKey()"/>
+    <p>
+      <span>公钥：{{ key.publicKey }}</span><br/>
+      <span>私钥：{{ key.privateKey }}</span>
+    </p>
   </div>
 </template>
 

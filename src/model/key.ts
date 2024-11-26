@@ -1,15 +1,17 @@
-import { ec } from "@/main";
+import { ec, EC } from "@/main";
 
 class Key {
-    keyPair: any;
+    keyPair: EC.KeyPair | null;
     privateKey: string;
     publicKey: string;
 
     constructor() {
-        this.gen();
+        this.keyPair = null;
+        this.privateKey = '';
+        this.publicKey = '';
     }
 
-    gen(): void {
+    generate(): void {
         this.keyPair = ec.genKeyPair();
         this.privateKey = this.keyPair.getPrivate('hex');
         this.publicKey = this.keyPair.getPublic('hex');
