@@ -14,7 +14,7 @@ class Transaction {
 
     // 计算哈希
     computeHash() {
-        return sha256(this.from + this.to + this.amount);
+        return sha256(this.from + this.to + this.amount).toString();
     }
 
     // 签名

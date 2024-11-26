@@ -2,13 +2,13 @@ import { Block } from './block';
 import { Transaction } from './transaction';
 
 class Chain {
-    chain: Block[];
+    blocks: Block[];
     transactionPool: Transaction[];
     minerReward: number;
     difficulty: number;
 
     constructor(minerReward: number, difficulty: number) {
-        this.chain = [this.bigBang()];
+        this.blocks = [this.bigBang()];
         this.transactionPool = [];
         this.minerReward = minerReward;
         this.difficulty = difficulty;
@@ -23,14 +23,14 @@ class Chain {
 
     // 获取最后一个区块
     getLastestBlock(): Block {
-        return this.chain[this.chain.length - 1];
+        return this.blocks[this.blocks.length - 1];
     }
 
     // 添加区块
     addBlock(newBlock: Block): void {
         newBlock.previousHash = this.getLastestBlock().hash;
         newBlock.mine(this.difficulty);
-        this.chain.push(newBlock);
+        this.blocks.push(newBlock);
     }
 
     // 挖矿
@@ -42,7 +42,7 @@ class Chain {
         // 挖矿
         const newBlock = new Block(this.transactionPool);
         newBlock.mine(this.difficulty);
-        this.chain.push(newBlock);
+        this.blocks.push(newBlock);
         this.transactionPool = [];
     }
 
@@ -57,15 +57,15 @@ class Chain {
 
     // 验证区块链
     validate(): boolean {
-        if (this.chain.length === 1) {
-            const block:Block = this.chain[0]
+        if (this.blocks.length === 1) {
+            const block:Block = this.blocks[0]
             if(block.hash !== block.computeHash()) {
                 console.log('创世区块被篡改！');
                 return false;
             }
         }
-        for (let i: number = 1; i < this.chain.length; i++) {
-            const block = this.chain[i];
+        for (let i: number = 1; i < this.blocks.length; i++) {
+            const block = this.blocks[i];
             if (!block.validateTransactions()) {
                 console.log('区块中存在非法交易！');
                 return false;
@@ -74,7 +74,7 @@ class Chain {
                 console.log('区块数据被篡改！');
                 return false;
             }
-            const previousBlock = this.chain[i - 1];
+            const previousBlock = this.blocks[i - 1];
             if (block.previousHash !== previousBlock.hash) {
                 console.log('区块链断裂！');
                 return false;

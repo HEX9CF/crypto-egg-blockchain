@@ -23,7 +23,7 @@ class Block {
             + this.previousHash
             + this.timestamp
             + this.nonce
-        ).toSTring();
+        ).toString();
     }
 
     getAnswer(difficulty: number): string {
