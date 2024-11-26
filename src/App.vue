@@ -1,30 +1,30 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+import { ec } from '@/main';
+import { Chain } from '@/model/chain';
+import { Block } from '@/model/block';
+import { Key } from '@/model/key';
+import { Transaction } from '@/model/transaction';
 
-import { ec } from './main'
-import { Chain } from './model/chain';
-import { Block } from './model/block';
-import { Transaction } from './model/transaction';
+import KeyGenComp from '@/components/KeyGenComp.vue';
 
-const chain = new Chain(1, 4)
+const chain = new Chain(1, 4);
 
-// 生成密钥对
-const keyPairSender = ec.genKeyPair();
-const privateKeySender = keyPairSender.getPrivate('hex');
-const publicKeySender = keyPairSender.getPublic('hex');
-
-const keyPairReceiver = ec.genKeyPair();
-const privateKeyReceiver = keyPairReceiver.getPrivate('hex');
-const publicKeyReceiver = keyPairReceiver.getPublic('hex');
-
-const t1 = new Transaction(publicKeySender, publicKeyReceiver, 10);
-t1.sign(keyPairSender);
-chain.addTransaction(t1);
-
-chain.mineTransactionPool(publicKeyReceiver);
-console.log(chain);
-console.log(chain.blocks[1].transactions)
+// // 生成密钥对
+// const keyPairSender = ec.genKeyPair();
+// const privateKeySender = keyPairSender.getPrivate('hex');
+// const publicKeySender = keyPairSender.getPublic('hex');
+//
+// const keyPairReceiver = ec.genKeyPair();
+// const privateKeyReceiver = keyPairReceiver.getPrivate('hex');
+// const publicKeyReceiver = keyPairReceiver.getPublic('hex');
+//
+// const t1 = new Transaction(publicKeySender, publicKeyReceiver, 10);
+// t1.sign(keyPairSender);
+// chain.addTransaction(t1);
+//
+// chain.mineTransactionPool(publicKeyReceiver);
+// console.log(chain);
+// console.log(chain.blocks[1].transactions)
 </script>
 
 <template>
@@ -39,7 +39,7 @@ console.log(chain.blocks[1].transactions)
   </header>
 
   <main>
-<!--    <TheWelcome />-->
+    <KeyGenComp />
   </main>
 </template>
 
