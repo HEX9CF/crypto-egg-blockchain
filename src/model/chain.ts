@@ -84,4 +84,4 @@ class Chain {
     }
 }
 
-export { Chain }
+export { Chain };

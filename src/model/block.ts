@@ -61,4 +61,4 @@ class Block {
     }
 }
 
-export { Block }
+export { Block };
