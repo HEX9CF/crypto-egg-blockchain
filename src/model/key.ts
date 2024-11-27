@@ -30,6 +30,12 @@ class Key {
         if (this.keyPair === null) {
             return false;
         }
+        if (this.privateKey !== this.keyPair.getPrivate('hex')) {
+            return false;
+        }
+        if (this.publicKey !== this.keyPair.getPublic('hex')) {
+            return false;
+        }
         return this.keyPair.validate();
    }
 

@@ -29,6 +29,14 @@ function clickClearKey() {
   console.log("清空密钥对成功");
 }
 
+function clickValidateKey() {
+  if (key.value.validate()) {
+    console.log("密钥对有效");
+  } else {
+    console.error("密钥对无效");
+  }
+}
+
 function clickAddTransaction(): void {
   if (key.value.keyPair === null) {
     console.error("密钥对不存在");
@@ -73,30 +81,30 @@ function clickValidate(): void {
         <input type="text" v-model="key.privateKey"/><br/>
         <label>公钥：</label>
         <input type="text" v-model="key.publicKey"/><br/><br/>
+        <input type="button" value="清空密钥对" @click="clickClearKey()"/>&nbsp;
         <input type="button" value="生成密钥对" @click="clickGenKey()"/>&nbsp;
         <input type="button" value="从私钥导入" @click="clickKeyFromPrivate()"/>&nbsp;
-        <input type="button" value="清空密钥对" @click="clickClearKey()"/>
+        <input type="button" value="验证密钥对" @click="clickValidateKey()"/>&nbsp;
       </p>
     </div>
 
+    <hr/>
+
     <div>
       <p>
+        <h1>交易</h1>
         <form>
           <label>收款人公钥：</label>
           <input type="text" v-model="newTransaction.to"/><br/>
           <label>转账金额：</label>
           <input type="text" v-model="newTransaction.amount"/><br/><br/>
-          <input type="button" value="添加交易" @click="clickAddTransaction()"/>
+          <input type="button" value="清空表单" @click="newTransaction.to = ''; newTransaction.amount = 0"/>&nbsp;
+          <input type="button" value="添加交易" @click="clickAddTransaction()"/>&nbsp;
         </form>
       </p>
     </div>
 
-    <div>
-      <p>
-        <input type="button" value="挖矿" @click="clickMine()"/>&nbsp;
-        <input type="button" value="验证区块链" @click="clickValidate()"/>
-      </p>
-    </div>
+    <hr/>
 
     <div>
       <p>
@@ -105,6 +113,12 @@ function clickValidate(): void {
         <span>挖矿奖励：{{ chain.minerReward }}</span><br/>
         <span>区块数量：{{ chain.blocks.length }}</span><br/>
         <span>交易池大小：{{ chain.transactionPool.length }}</span><br/>
+
+        <p>
+          <input type="button" value="挖矿" @click="clickMine()"/>&nbsp;
+          <input type="button" value="验证区块链" @click="clickValidate()"/>
+        </p>
+
         <div v-if="chain.blocks.length > 0">
           <h2>区块列表</h2>
           <p v-for="(block, index) in chain.blocks">

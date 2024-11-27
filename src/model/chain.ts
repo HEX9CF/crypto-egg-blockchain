@@ -52,6 +52,10 @@ class Chain {
             console.error('非法交易！');
             return;
         }
+        if (transaction.from === transaction.to) {
+            console.error('不能给自己转账！');
+            return;
+        }
         console.log('交易已添加至交易池');
         this.transactionPool.push(transaction);
     }
