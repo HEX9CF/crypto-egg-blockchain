@@ -1,15 +1,17 @@
 import { ec, EC, sha256 } from '../main'
 
 class Transaction {
+    timestamp: number;
     from: string;
     to: string;
     amount: number;
-    signature: string = '';
+    signature: string;
 
     constructor(from: string, to: string, amount: number) {
         this.from = from;
         this.to = to;
         this.amount = amount;
+        this.timestamp = Date.now();
     }
 
     // 计算哈希

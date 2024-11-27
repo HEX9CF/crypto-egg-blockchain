@@ -42,7 +42,7 @@ class Chain {
         // 挖矿
         const newBlock = new Block(this.transactionPool);
         newBlock.mine(this.difficulty);
-        this.blocks.push(newBlock);
+        this.addBlock(newBlock);
         this.transactionPool = [];
     }
 
