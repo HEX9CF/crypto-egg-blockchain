@@ -24,6 +24,11 @@ function clickKeyFromPrivate() {
   console.log("通过私钥导入密钥对成功");
 }
 
+function clickClearKey() {
+  key.value.clear();
+  console.log("清空密钥对成功");
+}
+
 function clickAddTransaction(): void {
   if (key.value.keyPair === null) {
     console.error("密钥对不存在");
@@ -69,7 +74,8 @@ function clickValidate(): void {
         <label>公钥：</label>
         <input type="text" v-model="key.publicKey"/><br/><br/>
         <input type="button" value="生成密钥对" @click="clickGenKey()"/>&nbsp;
-        <input type="button" value="通过私钥导入" @click="clickKeyFromPrivate()"/>
+        <input type="button" value="从私钥导入" @click="clickKeyFromPrivate()"/>&nbsp;
+        <input type="button" value="清空密钥对" @click="clickClearKey()"/>
       </p>
     </div>
 

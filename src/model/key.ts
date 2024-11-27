@@ -24,6 +24,21 @@ class Key {
         this.privateKey = privateKey;
         this.publicKey = this.keyPair.getPublic('hex');
     }
+
+    // 验证密钥对
+   validate(): boolean {
+        if (this.keyPair === null) {
+            return false;
+        }
+        return this.keyPair.validate();
+   }
+
+   // 清空
+    clear(): void {
+        this.keyPair = null;
+        this.privateKey = '';
+        this.publicKey = '';
+    }
 }
 
 export { Key };
