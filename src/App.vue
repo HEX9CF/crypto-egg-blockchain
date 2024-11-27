@@ -16,6 +16,12 @@ function clickGenKey(): void {
   // console.log(key.value.keyPair);
   console.log(key.value.privateKey);
   console.log(key.value.publicKey);
+  console.log("生成密钥对成功");
+}
+
+function clickKeyFromPrivate() {
+  key.value.fromPrivate(key.value.privateKey);
+  console.log("通过私钥导入密钥对成功");
 }
 
 function clickAddTransaction(): void {
@@ -57,19 +63,23 @@ function clickValidate(): void {
   <main>
     <div>
       <p>
-        <input type="button" value="生成密钥对" @click="clickGenKey()"/><br/>
-        <span>公钥：{{ key.publicKey }}</span><br/>
-        <span>私钥：{{ key.privateKey }}</span>
+        <h1>密钥对管理</h1>
+        <label>私钥：</label>
+        <input type="text" v-model="key.privateKey"/><br/>
+        <label>公钥：</label>
+        <input type="text" v-model="key.publicKey"/><br/><br/>
+        <input type="button" value="生成密钥对" @click="clickGenKey()"/>&nbsp;
+        <input type="button" value="通过私钥导入" @click="clickKeyFromPrivate()"/>
       </p>
     </div>
 
     <div>
       <p>
         <form>
-          <label>收款人公钥</label><br/>
+          <label>收款人公钥：</label>
           <input type="text" v-model="newTransaction.to"/><br/>
-          <label>转账金额</label><br/>
-          <input type="text" v-model="newTransaction.amount"/><br/>
+          <label>转账金额：</label>
+          <input type="text" v-model="newTransaction.amount"/><br/><br/>
           <input type="button" value="添加交易" @click="clickAddTransaction()"/>
         </form>
       </p>
@@ -77,8 +87,7 @@ function clickValidate(): void {
 
     <div>
       <p>
-        <input type="button" value="挖矿" @click="clickMine()"/>
-        <br/><br/>
+        <input type="button" value="挖矿" @click="clickMine()"/>&nbsp;
         <input type="button" value="验证区块链" @click="clickValidate()"/>
       </p>
     </div>

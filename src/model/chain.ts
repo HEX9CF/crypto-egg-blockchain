@@ -49,9 +49,10 @@ class Chain {
     // 添加交易
     addTransaction(transaction: Transaction): void {
         if (!transaction.validate()) {
-            throw new Error('非法交易！');
+            console.error('非法交易！');
+            return;
         }
-        console.log('验证通过，交易已添加至交易池');
+        console.log('交易已添加至交易池');
         this.transactionPool.push(transaction);
     }
 
@@ -60,23 +61,23 @@ class Chain {
         if (this.blocks.length === 1) {
             const block:Block = this.blocks[0]
             if(block.hash !== block.computeHash()) {
-                console.log('创世区块被篡改！');
+                console.error('创世区块被篡改！');
                 return false;
             }
         }
         for (let i: number = 1; i < this.blocks.length; i++) {
             const block = this.blocks[i];
             if (!block.validateTransactions()) {
-                console.log('区块中存在非法交易！');
+                console.error('区块中存在非法交易！');
                 return false;
             }
             if (block.hash !== block.computeHash()) {
-                console.log('区块数据被篡改！');
+                console.error('区块数据被篡改！');
                 return false;
             }
             const previousBlock = this.blocks[i - 1];
             if (block.previousHash !== previousBlock.hash) {
-                console.log('区块链断裂！');
+                console.error('区块链断裂！');
                 return false;
             }
         }

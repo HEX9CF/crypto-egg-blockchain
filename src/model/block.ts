@@ -35,10 +35,10 @@ class Block {
     }
 
     // 挖矿
-    mine(difficulty: number) {
+    mine(difficulty: number): void {
         if (!this.validateTransactions()) {
-            console.log('存在非法交易！')
-            return false;
+            console.error('存在非法交易！')
+            return;
         }
         while (true) {
             this.hash = this.computeHash();
