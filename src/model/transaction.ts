@@ -1,4 +1,4 @@
-import { ec, sha256 } from '../main'
+import { ec, EC, sha256 } from '../main'
 
 class Transaction {
     from: string;
@@ -18,7 +18,7 @@ class Transaction {
     }
 
     // 签名
-    sign(key: any): void {
+    sign(key: EC.KeyPair): void {
         this.signature = key.sign(this.computeHash(), 'base64').toDER('hex');
     }
 

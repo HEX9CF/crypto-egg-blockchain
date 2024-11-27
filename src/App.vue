@@ -1,27 +1,40 @@
-<script setup>
+<script setup lang="ts">
+import { ref } from 'vue';
 import { ec } from '@/main';
 import { Chain } from '@/model/chain';
 import { Block } from '@/model/block';
 import { Key } from '@/model/key';
 import { Transaction } from '@/model/transaction';
 
-import KeyGenComp from '@/components/KeyGenComp.vue';
+const chain = ref(new Chain(1, 2));
+const key = ref(new Key());
+const newTransaction = ref(new Transaction());
 
-const chain = new Chain(1, 4);
+function clickGenKey(): void {
+  key.value.generate();
+  console.log(key.value.keyPair);
+  console.log(key.value.privateKey);
+  console.log(key.value.publicKey);
+}
 
-// // 生成密钥对
-// const keyPairSender = ec.genKeyPair();
-// const privateKeySender = keyPairSender.getPrivate('hex');
-// const publicKeySender = keyPairSender.getPublic('hex');
-//
-// const keyPairReceiver = ec.genKeyPair();
-// const privateKeyReceiver = keyPairReceiver.getPrivate('hex');
-// const publicKeyReceiver = keyPairReceiver.getPublic('hex');
-//
-// const t1 = new Transaction(publicKeySender, publicKeyReceiver, 10);
-// t1.sign(keyPairSender);
-// chain.addTransaction(t1);
-//
+function clickAddTransaction(): void {
+  if (key.value.keyPair === null) {
+    console.error('密钥对不存在');
+    return;
+  }
+  newTransaction.value.from = key.value.publicKey;
+  newTransaction.value.sign(key.value.keyPair);
+  chain.value.addTransaction(newTransaction.value);
+  // console.log(newTransaction);
+  alert('添加交易成功');
+}
+
+function clickMine(): void {
+  chain.value.mineTransactionPool(key.value.publicKey);
+  // console.log(chain);
+  alert('挖矿成功');
+}
+
 // chain.mineTransactionPool(publicKeyReceiver);
 // console.log(chain);
 // console.log(chain.blocks[1].transactions)
@@ -29,47 +42,38 @@ const chain = new Chain(1, 4);
 
 <template>
   <header>
-<!--
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-    </div>
--->
   </header>
 
   <main>
-    <KeyGenComp />
+    <div>
+      <p>
+        <input type="button" value="生成密钥对" @click="clickGenKey()"/><br/>
+        <span>公钥：{{ key.publicKey }}</span><br/>
+        <span>私钥：{{ key.privateKey }}</span>
+      </p>
+    </div>
+
+    <div>
+      <p>
+        <form>
+          <label>收款人公钥</label><br/>
+          <input type="text" v-model="newTransaction.to"/><br/>
+          <label>转账金额</label><br/>
+          <input type="text" v-model="newTransaction.amount"/><br/>
+          <input type="button" value="添加交易" @click="clickAddTransaction()"/>
+        </form>
+      </p>
+    </div>
+
+    <div>
+      <p>
+        <input type="button" value="挖矿" @click="clickMine()"/>
+      </p>
+    </div>
+
   </main>
 </template>
 
 <style scoped>
-/*
-header {
-  line-height: 1.5;
-}
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-}
-*/
 </style>
