@@ -6,7 +6,10 @@ import { Transaction } from '@/model/transaction';
 
 const chain = ref(new Chain(1, 2));
 const key = ref(new Key());
-const newTransaction = ref(new Transaction());
+const newTransaction = ref({
+  to: "",
+  amount: 0
+});
 
 function clickGenKey(): void {
   key.value.generate();
@@ -20,18 +23,21 @@ function clickAddTransaction(): void {
     console.error("密钥对不存在");
     return;
   }
-  newTransaction.value.from = key.value.publicKey;
-  newTransaction.value.sign(key.value.keyPair);
-  chain.value.addTransaction(newTransaction.value);
-  // console.log(newTransaction);
+  let transaction: Transaction = new Transaction(
+      key.value.publicKey,
+      newTransaction.value.to,
+      newTransaction.value.amount
+  );
+  transaction.sign(key.value.keyPair);
+  chain.value.addTransaction(transaction);
   console.log("添加交易成功");
 }
 
 function clickMine(): void {
   chain.value.mineTransactionPool(key.value.publicKey);
   // console.log(chain);
+  // console.log(chain.value.getLastestBlock());
   console.log("挖矿成功");
-  console.log(chain.value.getLastestBlock());
 }
 
 function clickValidate(): void {
