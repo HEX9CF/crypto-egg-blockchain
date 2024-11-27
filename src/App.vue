@@ -35,6 +35,14 @@ function clickMine(): void {
   console.log(chain.value.getLastestBlock());
 }
 
+function clickValidate(): void {
+  if (chain.value.validate()) {
+    console.log("区块链有效");
+  } else {
+    console.error("区块链无效");
+  }
+}
+
 </script>
 
 <template>
@@ -65,6 +73,8 @@ function clickMine(): void {
     <div>
       <p>
         <input type="button" value="挖矿" @click="clickMine()"/>
+        <br/><br/>
+        <input type="button" value="验证区块链" @click="clickValidate()"/>
       </p>
     </div>
 
