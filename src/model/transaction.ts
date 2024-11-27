@@ -29,6 +29,9 @@ class Transaction {
         if (this.from === '') {
             return true;
         }
+        if (this.signature === '') {
+            return false;
+        }
         const keyObject = ec.keyFromPublic(this.from, 'hex');
         return keyObject.verify(this.computeHash(), this.signature);
     }

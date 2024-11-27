@@ -48,6 +48,9 @@ class Chain {
 
     // 添加交易
     addTransaction(transaction: Transaction): void {
+        if (transaction.from === '' || transaction.to === '') {
+            console.error('交易地址不能为空！');
+        }
         if (!transaction.validate()) {
             console.error('非法交易！');
             return;
@@ -55,6 +58,10 @@ class Chain {
         if (transaction.from === transaction.to) {
             console.error('不能给自己转账！');
             return;
+        }
+        if (transaction.amount <= 0) {
+            console.error('交易金额不能为0！');
+            return
         }
         console.log('交易已添加至交易池');
         this.transactionPool.push(transaction);
