@@ -250,7 +250,7 @@ function clickDonateEgg(): void {
 
         <div v-if="chain.blocks.length > 0">
           <h2>区块列表</h2>
-          <p v-for="(block, index) in chain.blocks">
+          <div v-for="(block, index) in chain.blocks">
             <h3>区块{{ index }}</h3>
             <span>时间戳：{{ block.timestamp }} ({{ new Date(block.timestamp).toLocaleString() }})</span><br/>
             <span>区块哈希：{{ block.hash }}</span><br/>
@@ -258,26 +258,27 @@ function clickDonateEgg(): void {
             <span>随机数：{{ block.nonce }}</span><br/>
             <div v-if="block.transactions.length > 0">
               <h4>交易列表</h4>
-              <p v-for="(transaction, index) in block.transactions">
+              <div v-for="(transaction, index) in block.transactions">
                 <span>时间戳：{{ transaction.timestamp }} ({{ new Date(transaction.timestamp).toLocaleString() }})</span><br/>
                 <span>发送方：{{ transaction.from }}</span><br/>
                 <span>接收方：{{ transaction.to }}</span><br/>
                 <span>金额：{{ transaction.amount }}</span><br/>
                 <span>交易信息：{{ transaction.message }}</span><br/>
-                <span>签名：{{ transaction.signature }}</span><br/>
-              </p>
+                <span>签名：{{ transaction.signature }}</span><br/><br/>
+              </div>
             </div>
-          </p>
+            <br/>
+          </div>
           <div v-if="chain.transactionPool.length > 0">
             <h2>交易池列表</h2>
-            <p v-for="(transaction, index) in chain.transactionPool">
+            <div v-for="(transaction, index) in chain.transactionPool">
               <span>时间戳：{{ transaction.timestamp }} ({{ new Date(transaction.timestamp).toLocaleString() }})</span><br/>
               <span>发送方：{{ transaction.from }}</span><br/>
               <span>接收方：{{ transaction.to }}</span><br/>
               <span>金额：{{ transaction.amount }}</span><br/>
               <span>交易信息：{{ transaction.message }}</span><br/>
-              <span>签名：{{ transaction.signature }}</span><br/>
-            </p>
+              <span>签名：{{ transaction.signature }}</span><br/><br/>
+            </div>
           </div>
         </div>
     </div>
