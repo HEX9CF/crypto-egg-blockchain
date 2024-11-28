@@ -9,7 +9,8 @@ const chain = ref(new Chain(1, 2));
 const key = ref(new Key());
 const newTransaction = ref({
   to: "",
-  amount: 0
+  amount: 0,
+  message: ""
 });
 const chicken = ref(new Chicken());
 const inventory = ref({
@@ -77,7 +78,8 @@ function clickAddTransaction(): void {
   let transaction: Transaction = new Transaction(
       key.value.publicKey,
       newTransaction.value.to,
-      newTransaction.value.amount
+      newTransaction.value.amount,
+      newTransaction.value.message
   );
   transaction.sign(key.value.keyPair);
   chain.value.addTransaction(transaction);
@@ -86,6 +88,11 @@ function clickAddTransaction(): void {
 }
 
 function clickMine(): void {
+  if (key.value.keyPair === null) {
+    console.error("密钥对不存在！");
+    message.value.block = "密钥对不存在！";
+    return;
+  }
   chain.value.mineTransactionPool(key.value.publicKey);
   // console.log(chain);
   // console.log(chain.value.getLastestBlock());
@@ -115,23 +122,58 @@ function clickFeed(): void {
     message.value.farm = "饲料不足，请先领取饲料！";
     return;
   }
-  inventory.value.food--;
   let delta: number = chicken.value.feed();
+  if (delta === 0) {
+    console.error("喂食失败，生蛋进度已满！");
+    message.value.farm = "喂食失败，生蛋进度已满！";
+    return;
+  }
+  inventory.value.food--;
   console.log("喂食成功，进度增加：" + delta + "%");
   message.value.farm = "喂食成功，进度增加：" + delta + "%";
 }
 
 function clickCollectEgg(): void {
-  if (chicken.value.egg <= 0) {
-    console.error("没有可收取的鸡蛋，请先喂食！");
-    message.value.farm = "没有可收取的鸡蛋，请先喂食！";
+  if (key.value.keyPair === null) {
+    console.error("密钥对不存在！");
+    message.value.farm = "密钥对不存在！";
     return;
   }
-  inventory.value.egg += chicken.value.collectEgg();
+  let collected: boolean = chicken.value.collectEgg();
+  if (!collected) {
+    console.error("收蛋失败，生蛋进度不足！");
+    message.value.farm = "收蛋失败，生蛋进度不足！";
+    return;
+  }
+  inventory.value.egg++;
+  chain.value.mineTransactionPool(key.value.publicKey);
   console.log("收蛋成功");
   message.value.farm = "收蛋成功";
 }
 
+function clickDonateEgg(): void {
+  if (inventory.value.egg <= 0) {
+    console.error("没有可捐赠的蛋，请先收蛋！");
+    message.value.farm = "没有可捐赠的蛋，请先收蛋！";
+    return;
+  }
+  if (key.value.keyPair === null) {
+    console.error("密钥对不存在！");
+    message.value.transaction = "密钥对不存在！";
+    return;
+  }
+  let transaction: Transaction = new Transaction(
+      key.value.publicKey,
+      "",
+      inventory.value.egg,
+      "捐蛋"
+  );
+  transaction.sign(key.value.keyPair);
+  chain.value.addTransaction(transaction);
+  inventory.value.egg = 0;
+  console.log("添加交易成功");
+  message.value.farm = "添加交易成功";
+}
 </script>
 
 <template>
@@ -142,12 +184,12 @@ function clickCollectEgg(): void {
     <div>
       <h1>养鸡场</h1>
       <span>生蛋进度：{{ chicken.progress }}%</span><br/>
-      <span>可收取鸡蛋：{{ chicken.egg }}</span><br/><br/>
       <span>饲料库存：{{ inventory.food }}</span><br/>
-      <span>鸡蛋库存：{{ inventory.egg }}</span><br/><br/>
+      <span>虚拟蛋库存：{{ inventory.egg }}</span><br/><br/>
       <input type="button" value="领取饲料" @click="clickGetFood()"/>&nbsp;
       <input type="button" value="喂食" @click="clickFeed()"/>&nbsp;
       <input type="button" value="收蛋" @click="clickCollectEgg()"/>&nbsp;
+      <input type="button" value="捐蛋" @click="clickDonateEgg()"/>
       <p v-if="message.farm !== ''">
         <span>{{ message.farm }}</span>
       </p>
@@ -178,8 +220,10 @@ function clickCollectEgg(): void {
           <label>收款人公钥：</label>
           <input type="text" v-model="newTransaction.to"/><br/>
           <label>转账金额：</label>
-          <input type="text" v-model="newTransaction.amount"/><br/><br/>
-          <input type="button" value="清空表单" @click="newTransaction.to = ''; newTransaction.amount = 0"/>&nbsp;
+          <input type="text" v-model="newTransaction.amount"/><br/>
+          <label>交易信息：</label>
+          <input type="text" v-model="newTransaction.message"/><br/><br/>
+          <input type="button" value="清空表单" @click="newTransaction.to = ''; newTransaction.amount = 0; "/>&nbsp;
           <input type="button" value="添加交易" @click="clickAddTransaction()"/>&nbsp;
         </form>
         <p v-if="message.transaction !== ''">
@@ -219,6 +263,7 @@ function clickCollectEgg(): void {
                 <span>发送方：{{ transaction.from }}</span><br/>
                 <span>接收方：{{ transaction.to }}</span><br/>
                 <span>金额：{{ transaction.amount }}</span><br/>
+                <span>交易信息：{{ transaction.message }}</span><br/>
                 <span>签名：{{ transaction.signature }}</span><br/>
               </p>
             </div>
@@ -230,6 +275,7 @@ function clickCollectEgg(): void {
               <span>发送方：{{ transaction.from }}</span><br/>
               <span>接收方：{{ transaction.to }}</span><br/>
               <span>金额：{{ transaction.amount }}</span><br/>
+              <span>交易信息：{{ transaction.message }}</span><br/>
               <span>签名：{{ transaction.signature }}</span><br/>
             </p>
           </div>

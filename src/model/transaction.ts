@@ -5,13 +5,15 @@ class Transaction {
     from: string;
     to: string;
     amount: number;
+    message: string;
     signature: string;
 
-    constructor(from: string, to: string, amount: number) {
+    constructor(from: string, to: string, amount: number, message: string = '') {
         this.from = from;
         this.to = to;
         this.amount = amount;
         this.timestamp = Date.now();
+        this.message = message;
     }
 
     // 计算哈希

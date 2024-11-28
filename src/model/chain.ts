@@ -35,9 +35,15 @@ class Chain {
 
     // 挖矿
     mineTransactionPool(minerAddress: string) {
-        // 发放奖励
-        const rewardTransaction = new Transaction('', minerAddress, this.minerReward);
-        this.transactionPool.push(rewardTransaction);
+        if (minerAddress === '') {
+            console.error('矿工地址不能为空！');
+            return
+        }
+        if (this.minerReward !== 0) {
+            // 发放奖励
+            const rewardTransaction = new Transaction('', minerAddress, this.minerReward, "矿工奖励");
+            this.transactionPool.push(rewardTransaction);
+        }
 
         // 挖矿
         const newBlock = new Block(this.transactionPool);
@@ -48,9 +54,6 @@ class Chain {
 
     // 添加交易
     addTransaction(transaction: Transaction): void {
-        if (transaction.from === '' || transaction.to === '') {
-            console.error('交易地址不能为空！');
-        }
         if (!transaction.validate()) {
             console.error('非法交易！');
             return;
