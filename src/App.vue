@@ -27,10 +27,10 @@ import { chain, key, transactionForm } from '@/stores/blockchain';
 
   <main>
     <div>
-      <h1>养鸡场</h1>
+      <h1>虚拟养鸡场</h1>
       <span>生蛋进度：{{ chicken.progress }}%</span><br/>
       <span>饲料库存：{{ inventory.food }}</span><br/>
-      <span>虚拟蛋库存：{{ inventory.egg }}</span><br/><br/>
+      <span>加密蛋库存：{{ inventory.egg }}</span><br/><br/>
       <input type="button" value="领取饲料" @click="clickGetFood()"/>&nbsp;
       <input type="button" value="喂食" @click="clickFeed()"/>&nbsp;
       <input type="button" value="收蛋" @click="clickCollectEgg()"/>&nbsp;<br/><br/>
