@@ -26,9 +26,11 @@ class Chicken {
     }
 
     // 收蛋
-    collectEgg(): void {
+    collectEgg(): number {
+        let delta: number = this.egg;
         console.log('收蛋：' + this.egg);
         this.egg = 0;
+        return delta;
     }
 }
 

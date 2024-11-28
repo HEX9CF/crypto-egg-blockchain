@@ -106,18 +106,30 @@ function clickValidateChain(): void {
 function clickGetFood(): void {
   inventory.value.food++;
   console.log("领取饲料成功");
+  message.value.farm = "领取饲料成功";
 }
 
 function clickFeed(): void {
   if (inventory.value.food <= 0) {
-    console.error("饲料不足！");
-    message.value.farm = "饲料不足！";
+    console.error("饲料不足，请先领取饲料！");
+    message.value.farm = "饲料不足，请先领取饲料！";
     return;
   }
   inventory.value.food--;
   let delta: number = chicken.value.feed();
   console.log("喂食成功，进度增加：" + delta + "%");
   message.value.farm = "喂食成功，进度增加：" + delta + "%";
+}
+
+function clickCollectEgg(): void {
+  if (chicken.value.egg <= 0) {
+    console.error("没有可收取的鸡蛋，请先喂食！");
+    message.value.farm = "没有可收取的鸡蛋，请先喂食！";
+    return;
+  }
+  inventory.value.egg += chicken.value.collectEgg();
+  console.log("收蛋成功");
+  message.value.farm = "收蛋成功";
 }
 
 </script>
@@ -131,8 +143,8 @@ function clickFeed(): void {
       <h1>养鸡场</h1>
       <span>生蛋进度：{{ chicken.progress }}%</span><br/>
       <span>可收取鸡蛋：{{ chicken.egg }}</span><br/><br/>
-      <span>饲料：{{ inventory.food }}</span><br/>
-      <span>鸡蛋：{{ inventory.egg }}</span><br/><br/>
+      <span>饲料库存：{{ inventory.food }}</span><br/>
+      <span>鸡蛋库存：{{ inventory.egg }}</span><br/><br/>
       <input type="button" value="领取饲料" @click="clickGetFood()"/>&nbsp;
       <input type="button" value="喂食" @click="clickFeed()"/>&nbsp;
       <input type="button" value="收蛋" @click="clickCollectEgg()"/>&nbsp;
