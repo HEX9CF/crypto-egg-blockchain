@@ -17,8 +17,8 @@ import {
 } from '@/controllers/farm';
 
 import { message } from '@/stores/message';
-import { inventory, chicken } from '@/stores/farm';
-import { chain, key, newTransaction } from '@/stores/blockchain';
+import { inventory, chicken, donateForm } from '@/stores/farm';
+import { chain, key, transactionForm } from '@/stores/blockchain';
 </script>
 
 <template>
@@ -33,8 +33,10 @@ import { chain, key, newTransaction } from '@/stores/blockchain';
       <span>虚拟蛋库存：{{ inventory.egg }}</span><br/><br/>
       <input type="button" value="领取饲料" @click="clickGetFood()"/>&nbsp;
       <input type="button" value="喂食" @click="clickFeed()"/>&nbsp;
-      <input type="button" value="收蛋" @click="clickCollectEgg()"/>&nbsp;
-      <input type="button" value="捐蛋" @click="clickDonateEgg()"/>
+      <input type="button" value="收蛋" @click="clickCollectEgg()"/>&nbsp;<br/><br/>
+      <label>捐蛋数量：</label>
+      <input type="text" v-model="donateForm.amount"/>&nbsp;
+      <input type="button" value="捐蛋" @click="clickDonateEgg()"/>&nbsp;
       <p v-if="message.farm !== ''">
         <span>{{ message.farm }}</span>
       </p>
@@ -63,12 +65,12 @@ import { chain, key, newTransaction } from '@/stores/blockchain';
         <h1>交易</h1>
         <form>
           <label>收款人公钥：</label>
-          <input type="text" v-model="newTransaction.to"/><br/>
+          <input type="text" v-model="transactionForm.to"/><br/>
           <label>转账金额：</label>
-          <input type="text" v-model="newTransaction.amount"/><br/>
+          <input type="text" v-model="transactionForm.amount"/><br/>
           <label>交易信息：</label>
-          <input type="text" v-model="newTransaction.message"/><br/><br/>
-          <input type="button" value="清空表单" @click="newTransaction.to = ''; newTransaction.amount = 0; "/>&nbsp;
+          <input type="text" v-model="transactionForm.message"/><br/><br/>
+          <input type="button" value="清空表单" @click="transactionForm.to = ''; transactionForm.amount = 0; transactionForm.message = '';"/>&nbsp;
           <input type="button" value="添加交易" @click="clickAddTransaction()"/>&nbsp;
         </form>
         <p v-if="message.transaction !== ''">

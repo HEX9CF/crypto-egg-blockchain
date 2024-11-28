@@ -1,6 +1,6 @@
 import { Transaction } from '@/models/transaction';
 import { message } from '@/stores/message';
-import { chain, key, newTransaction } from '@/stores/blockchain';
+import { chain, key, transactionForm } from '@/stores/blockchain';
 
 function clickGenKey(): void {
     key.value.generate();
@@ -42,21 +42,21 @@ function clickAddTransaction(): void {
         message.value.transaction = "密钥对不存在！";
         return;
     }
-    if (newTransaction.value.to === "") {
+    if (transactionForm.value.to === "") {
         console.error("收款人公钥不能为空！");
         message.value.transaction = "收款人公钥不能为空！";
         return;
     }
-    if (newTransaction.value.amount <= 0) {
+    if (transactionForm.value.amount <= 0) {
         console.error("转账金额必须大于0！");
         message.value.transaction = "转账金额必须大于0！";
         return;
     }
     let transaction: Transaction = new Transaction(
         key.value.publicKey,
-        newTransaction.value.to,
-        newTransaction.value.amount,
-        newTransaction.value.message
+        transactionForm.value.to,
+        transactionForm.value.amount,
+        transactionForm.value.message
     );
     transaction.sign(key.value.keyPair);
     chain.value.addTransaction(transaction);

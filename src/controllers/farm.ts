@@ -1,6 +1,6 @@
 import { Transaction } from "@/models/transaction";
 import { message } from '@/stores/message';
-import { chicken, inventory } from "@/stores/farm";
+import { chicken, inventory, donateForm } from "@/stores/farm";
 import { chain, key } from "@/stores/blockchain";
 
 function clickGetFood(): void {
@@ -50,6 +50,16 @@ function clickDonateEgg(): void {
     message.value.farm = "没有可捐赠的蛋，请先收蛋！";
     return;
   }
+  if (donateForm.value.amount <= 0) {
+    console.error("捐赠数量必须大于0！");
+    message.value.farm = "捐赠数量必须大于0！";
+    return;
+  }
+  if (donateForm.value.amount > inventory.value.egg) {
+      console.error("捐赠数量不能大于库存数量！");
+      message.value.farm = "捐赠数量不能大于库存数量！";
+      return;
+  }
   if (key.value.keyPair === null) {
     console.error("密钥对不存在！");
     message.value.transaction = "密钥对不存在！";
@@ -58,12 +68,12 @@ function clickDonateEgg(): void {
   let transaction: Transaction = new Transaction(
       key.value.publicKey,
       "",
-      inventory.value.egg,
+        donateForm.value.amount,
       "捐蛋"
   );
   transaction.sign(key.value.keyPair);
   chain.value.addTransaction(transaction);
-  inventory.value.egg = 0;
+  inventory.value.egg -= donateForm.value.amount;
   console.log("添加交易成功");
   message.value.farm = "添加交易成功";
 }

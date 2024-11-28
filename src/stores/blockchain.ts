@@ -4,10 +4,10 @@ import { Key } from "@/models/key";
 
 const chain = ref(new Chain(1, 2));
 const key = ref(new Key());
-const newTransaction = ref({
+const transactionForm = ref({
     to: "",
     amount: 0,
     message: ""
 });
 
-export { chain, key, newTransaction };
+export { chain, key, transactionForm };
