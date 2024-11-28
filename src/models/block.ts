@@ -1,5 +1,5 @@
-import { sha256 } from '../main';
-import { Transaction } from './transaction';
+import sha256 from 'crypto-js/sha256';
+import { Transaction } from '@/models/transaction';
 
 class Block {
     transactions: Transaction[];

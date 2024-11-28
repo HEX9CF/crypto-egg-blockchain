@@ -1,5 +1,5 @@
-import { Block } from './block';
-import { Transaction } from './transaction';
+import { Block } from '@/models/block';
+import { Transaction } from '@/models/transaction';
 
 class Chain {
     blocks: Block[];

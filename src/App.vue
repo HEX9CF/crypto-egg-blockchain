@@ -1,179 +1,24 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { Chain } from '@/model/chain';
-import { Key } from '@/model/key';
-import { Transaction } from '@/model/transaction';
-import { Chicken } from '@/model/chicken';
+import {
+  clickGenKey,
+  clickKeyFromPrivate,
+  clickClearKey,
+  clickValidateKey,
+  clickAddTransaction,
+  clickMine,
+  clickValidateChain
+} from '@/controllers/blockchain';
 
-const chain = ref(new Chain(1, 2));
-const key = ref(new Key());
-const newTransaction = ref({
-  to: "",
-  amount: 0,
-  message: ""
-});
-const chicken = ref(new Chicken());
-const inventory = ref({
-  food: 0,
-  egg: 0
-})
-const message = ref({
-  key: "",
-  transaction: "",
-  block: "",
-  farm: ""
-});
+import {
+  clickGetFood,
+  clickFeed,
+  clickCollectEgg,
+  clickDonateEgg
+} from '@/controllers/farm';
 
-function clickGenKey(): void {
-  key.value.generate();
-  // console.log(key.value.keyPair);
-  console.log(key.value.privateKey);
-  console.log(key.value.publicKey);
-  console.log("生成密钥对成功");
-  message.value.key = "生成密钥对成功";
-}
-
-function clickKeyFromPrivate() {
-  if (key.value.privateKey === "") {
-    console.error("私钥不能为空！");
-    message.value.key = "私钥不能为空！";
-    return;
-  }
-  key.value.fromPrivate(key.value.privateKey);
-  console.log("通过私钥导入密钥对成功");
-  message.value.key = "通过私钥导入密钥对成功";
-}
-
-function clickClearKey() {
-  key.value.clear();
-  console.log("清空密钥对成功");
-}
-
-function clickValidateKey() {
-  if (key.value.validate()) {
-    console.log("密钥对有效");
-    message.value.key = "密钥对有效";
-  } else {
-    console.error("密钥对无效！");
-    message.value.key = "密钥对无效！";
-  }
-}
-
-function clickAddTransaction(): void {
-  if (key.value.keyPair === null) {
-    console.error("密钥对不存在！");
-    message.value.transaction = "密钥对不存在！";
-    return;
-  }
-  if (newTransaction.value.to === "") {
-    console.error("收款人公钥不能为空！");
-    message.value.transaction = "收款人公钥不能为空！";
-    return;
-  }
-  if (newTransaction.value.amount <= 0) {
-    console.error("转账金额必须大于0！");
-    message.value.transaction = "转账金额必须大于0！";
-    return;
-  }
-  let transaction: Transaction = new Transaction(
-      key.value.publicKey,
-      newTransaction.value.to,
-      newTransaction.value.amount,
-      newTransaction.value.message
-  );
-  transaction.sign(key.value.keyPair);
-  chain.value.addTransaction(transaction);
-  console.log("添加交易成功");
-  message.value.transaction = "添加交易成功";
-}
-
-function clickMine(): void {
-  if (key.value.keyPair === null) {
-    console.error("密钥对不存在！");
-    message.value.block = "密钥对不存在！";
-    return;
-  }
-  chain.value.mineTransactionPool(key.value.publicKey);
-  // console.log(chain);
-  // console.log(chain.value.getLastestBlock());
-  console.log("挖矿成功");
-  message.value.block = "挖矿成功";
-}
-
-function clickValidateChain(): void {
-  if (chain.value.validate()) {
-    console.log("区块链有效");
-    message.value.block = "区块链有效";
-  } else {
-    console.error("区块链无效！");
-    message.value.block = "区块链无效！";
-  }
-}
-
-function clickGetFood(): void {
-  inventory.value.food++;
-  console.log("领取饲料成功");
-  message.value.farm = "领取饲料成功";
-}
-
-function clickFeed(): void {
-  if (inventory.value.food <= 0) {
-    console.error("饲料不足，请先领取饲料！");
-    message.value.farm = "饲料不足，请先领取饲料！";
-    return;
-  }
-  let delta: number = chicken.value.feed();
-  if (delta === 0) {
-    console.error("喂食失败，生蛋进度已满！");
-    message.value.farm = "喂食失败，生蛋进度已满！";
-    return;
-  }
-  inventory.value.food--;
-  console.log("喂食成功，进度增加：" + delta + "%");
-  message.value.farm = "喂食成功，进度增加：" + delta + "%";
-}
-
-function clickCollectEgg(): void {
-  if (key.value.keyPair === null) {
-    console.error("密钥对不存在！");
-    message.value.farm = "密钥对不存在！";
-    return;
-  }
-  let collected: boolean = chicken.value.collectEgg();
-  if (!collected) {
-    console.error("收蛋失败，生蛋进度不足！");
-    message.value.farm = "收蛋失败，生蛋进度不足！";
-    return;
-  }
-  inventory.value.egg++;
-  chain.value.mineTransactionPool(key.value.publicKey);
-  console.log("收蛋成功");
-  message.value.farm = "收蛋成功";
-}
-
-function clickDonateEgg(): void {
-  if (inventory.value.egg <= 0) {
-    console.error("没有可捐赠的蛋，请先收蛋！");
-    message.value.farm = "没有可捐赠的蛋，请先收蛋！";
-    return;
-  }
-  if (key.value.keyPair === null) {
-    console.error("密钥对不存在！");
-    message.value.transaction = "密钥对不存在！";
-    return;
-  }
-  let transaction: Transaction = new Transaction(
-      key.value.publicKey,
-      "",
-      inventory.value.egg,
-      "捐蛋"
-  );
-  transaction.sign(key.value.keyPair);
-  chain.value.addTransaction(transaction);
-  inventory.value.egg = 0;
-  console.log("添加交易成功");
-  message.value.farm = "添加交易成功";
-}
+import { message } from '@/stores/message';
+import { inventory, chicken } from '@/stores/farm';
+import { chain, key, newTransaction } from '@/stores/blockchain';
 </script>
 
 <template>

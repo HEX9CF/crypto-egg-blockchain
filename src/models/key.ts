@@ -1,4 +1,5 @@
-import { ec, EC } from "@/main";
+import { ec as EC } from 'elliptic';
+const ec = new EC('secp256k1');
 
 class Key {
     keyPair: EC.KeyPair | null;
