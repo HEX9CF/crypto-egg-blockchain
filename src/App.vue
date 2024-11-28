@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { Chain } from '@/model/chain';
 import { Key } from '@/model/key';
 import { Transaction } from '@/model/transaction';
+import { Chicken } from '@/model/chicken';
 
 const chain = ref(new Chain(1, 2));
 const key = ref(new Key());
@@ -10,11 +11,16 @@ const newTransaction = ref({
   to: "",
   amount: 0
 });
-
+const chicken = ref(new Chicken());
+const inventory = ref({
+  food: 0,
+  egg: 0
+})
 const message = ref({
   key: "",
   transaction: "",
-  block: ""
+  block: "",
+  farm: ""
 });
 
 function clickGenKey(): void {
@@ -97,6 +103,23 @@ function clickValidateChain(): void {
   }
 }
 
+function clickGetFood(): void {
+  inventory.value.food++;
+  console.log("领取饲料成功");
+}
+
+function clickFeed(): void {
+  if (inventory.value.food <= 0) {
+    console.error("饲料不足！");
+    message.value.farm = "饲料不足！";
+    return;
+  }
+  inventory.value.food--;
+  let delta: number = chicken.value.feed();
+  console.log("喂食成功，进度增加：" + delta + "%");
+  message.value.farm = "喂食成功，进度增加：" + delta + "%";
+}
+
 </script>
 
 <template>
@@ -105,7 +128,23 @@ function clickValidateChain(): void {
 
   <main>
     <div>
-        <h1>密钥对管理</h1>
+      <h1>养鸡场</h1>
+      <span>生蛋进度：{{ chicken.progress }}%</span><br/>
+      <span>可收取鸡蛋：{{ chicken.egg }}</span><br/><br/>
+      <span>饲料：{{ inventory.food }}</span><br/>
+      <span>鸡蛋：{{ inventory.egg }}</span><br/><br/>
+      <input type="button" value="领取饲料" @click="clickGetFood()"/>&nbsp;
+      <input type="button" value="喂食" @click="clickFeed()"/>&nbsp;
+      <input type="button" value="收蛋" @click="clickCollectEgg()"/>&nbsp;
+      <p v-if="message.farm !== ''">
+        <span>{{ message.farm }}</span>
+      </p>
+    </div>
+
+    <hr/>
+
+    <div>
+        <h1>钱包</h1>
         <label>私钥：</label>
         <input type="text" v-model="key.privateKey"/><br/>
         <label>公钥：</label>
