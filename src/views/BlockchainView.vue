@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {chain} from "@/stores/blockchain";
 import {clickMine, clickValidateChain} from "@/controllers/blockchain";
+import { formatTimestamp } from "@/utils/formatters";
 </script>
 
 <template>
@@ -39,9 +40,9 @@ import {clickMine, clickValidateChain} from "@/controllers/blockchain";
       </div>
     </template>
       <el-timeline>
-        <el-timeline-item v-for="(block, index) in chain.blocks" :timestamp="new Date(block.timestamp).toLocaleString()" placement="top">
+        <el-timeline-item v-for="(block, index) in chain.blocks.slice().reverse()" :timestamp="new Date(block.timestamp).toLocaleString()" placement="top">
           <el-card>
-            <h3>区块{{ index + 1 }}</h3>
+            <h3>区块{{ chain.blocks.length - index }}</h3>
             <p>
               <span>时间戳: {{ block.timestamp }} ({{ new Date(block.timestamp).toLocaleString() }})</span><br/>
               <span>区块哈希: {{ block.hash }}</span><br/>
@@ -49,17 +50,15 @@ import {clickMine, clickValidateChain} from "@/controllers/blockchain";
               <span>随机数: {{ block.nonce }}</span>
             </p>
             <div v-if="block.transactions.length > 0">
-              <hr/>
               <h4>交易列表</h4>
-              <div v-for="(transaction, index) in block.transactions" :key="index">
-                <h5>交易{{ index + 1 }}</h5>
-                <span>时间戳: {{ transaction.timestamp }} ({{ new Date(transaction.timestamp).toLocaleString() }})</span><br/>
-                <span>发送方: {{ transaction.from }}</span><br/>
-                <span>接收方: {{ transaction.to }}</span><br/>
-                <span>金额: {{ transaction.amount }}</span><br/>
-                <span>交易信息: {{ transaction.message }}</span><br/>
-                <span>签名: {{ transaction.signature }}</span><br/>
-              </div>
+              <el-table :data="block.transactions" stripe border show-overflow-tooltip style="width: 100%" height="200">
+                <el-table-column fixed prop="timestamp" label="时间戳" :formatter="formatTimestamp"/>
+                <el-table-column prop="from" label="发送方"/>
+                <el-table-column prop="to" label="接收方"/>
+                <el-table-column prop="amount" label="金额"/>
+                <el-table-column prop="message" label="交易信息"/>
+                <el-table-column prop="signature" label="签名"/>
+              </el-table>
             </div>
           </el-card>
         </el-timeline-item>

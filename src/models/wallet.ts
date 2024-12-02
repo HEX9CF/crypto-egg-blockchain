@@ -1,8 +1,9 @@
 import { ec as EC } from 'elliptic';
 import {chain} from "@/stores/blockchain";
+import {Transaction} from "@/models/transaction";
 const ec = new EC('secp256k1');
 
-class Wallet {
+export class Wallet {
     keyPair: EC.KeyPair | null;
     privateKey: string;
     publicKey: string;
@@ -65,7 +66,7 @@ class Wallet {
         this.balance = 0;
     }
 
-    // 更新余额
+    // 更新
     updateBalance(): boolean {
         if (this.keyPair === null) {
             console.log("密钥对不存在！");
@@ -76,5 +77,3 @@ class Wallet {
         return true;
     }
 }
-
-export { Wallet };

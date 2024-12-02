@@ -1,4 +1,4 @@
-class Chicken {
+export class Chicken {
     progress: number = 0; // 生蛋进度
 
     constructor() {
@@ -30,5 +30,3 @@ class Chicken {
         return true;
     }
 }
-
-export { Chicken };

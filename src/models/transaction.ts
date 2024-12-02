@@ -2,7 +2,7 @@ import { ec as EC } from 'elliptic';
 import sha256 from 'crypto-js/sha256';
 const ec = new EC('secp256k1');
 
-class Transaction {
+export class Transaction {
     timestamp: number;
     from: string;
     to: string;
@@ -40,5 +40,3 @@ class Transaction {
         return keyObject.verify(this.computeHash(), this.signature);
     }
 }
-
-export { Transaction }

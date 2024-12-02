@@ -2,7 +2,7 @@ import { Block } from '@/models/block';
 import { Transaction } from '@/models/transaction';
 import {Wallet} from "@/models/wallet";
 
-class Chain {
+export class Chain {
     blocks: Block[];
     transactionPool: Transaction[];
     minerReward: number;
@@ -113,9 +113,48 @@ class Chain {
                 }
             }
         }
-
+        for (const transaction of this.transactionPool) {
+            if (transaction.from === address) {
+                balance -= transaction.amount;
+            }
+            if (transaction.to === address) {
+                balance += transaction.amount;
+            }
+        }
         return balance
     }
-}
 
-export { Chain };
+    getOutTransactions(address: string): Transaction[] {
+        let transactions: Transaction[] = [];
+        for (const block of this.blocks) {
+            for (const transaction of block.transactions) {
+                if (transaction.from === address) {
+                    transactions.push(transaction);
+                }
+            }
+        }
+        for (const transaction of this.transactionPool) {
+            if (transaction.from === address) {
+                transactions.push(transaction);
+            }
+        }
+        return transactions;
+    }
+
+    getInTransactions(address: string): Transaction[] {
+        let transactions: Transaction[] = [];
+        for (const block of this.blocks) {
+            for (const transaction of block.transactions) {
+                if (transaction.to === address) {
+                    transactions.push(transaction);
+                }
+            }
+        }
+        for (const transaction of this.transactionPool) {
+            if (transaction.to === address) {
+                transactions.push(transaction);
+            }
+        }
+        return transactions;
+    }
+}

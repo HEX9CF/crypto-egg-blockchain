@@ -1,7 +1,14 @@
 <script setup lang="ts">
 import {wallet} from "@/stores/wallet";
-import {clickClearKey, clickGenKey, clickKeyFromPrivate, clickValidateKey, clickUpdateBalance} from "@/controllers/wallet";
 import {chain} from "@/stores/blockchain";
+import {formatTimestamp} from "@/utils/formatters";
+import {
+  clickClearKey,
+  clickGenKey,
+  clickKeyFromPrivate,
+  clickValidateKey,
+  clickUpdateBalance
+} from "@/controllers/wallet";
 </script>
 
 <template>
@@ -43,6 +50,30 @@ import {chain} from "@/stores/blockchain";
         <el-button type="primary" @click="clickValidateKey">验证密钥对</el-button>
       </el-form-item>
     </el-form>
+  </el-card>
+  <el-card v-if="wallet.keyPair" style="margin-top: 20px">
+    <template #header>
+      <div class="card-header">
+        <span>转入交易</span>
+      </div>
+    </template>
+    <el-table :data="chain.getInTransactions(wallet.publicKey)" stripe border show-overflow-tooltip style="width: 100%" height="400">
+      <el-table-column fixed prop="timestamp" label="时间戳" :formatter="formatTimestamp"/>
+      <el-table-column prop="from" label="发送方"/>
+      <el-table-column prop="message" label="交易信息"/>
+    </el-table>
+  </el-card>
+  <el-card v-if="wallet.keyPair" style="margin-top: 20px">
+    <template #header>
+      <div class="card-header">
+        <span>转出交易</span>
+      </div>
+    </template>
+    <el-table :data="chain.getOutTransactions(wallet.publicKey)" stripe border show-overflow-tooltip style="width: 100%" height="400">
+      <el-table-column fixed prop="timestamp" label="时间戳" :formatter="formatTimestamp"/>
+      <el-table-column prop="to" label="接收方"/>
+      <el-table-column prop="message" label="交易信息"/>
+    </el-table>
   </el-card>
 </template>
 

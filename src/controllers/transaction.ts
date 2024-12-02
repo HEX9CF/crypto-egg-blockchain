@@ -23,7 +23,12 @@ export function clickAddTransaction(): void {
     wallet.value.updateBalance();
     if (transactionForm.value.amount > wallet.value.balance) {
         console.error("余额不足！");
-        ElMessage.warning("余额不足！");
+        ElMessage.error("余额不足！");
+        return
+    }
+    if (wallet.value.publicKey === transactionForm.value.to) {
+        console.error("不能给自己转账！");
+        ElMessage.error("不能给自己转账！");
         return
     }
     let transaction: Transaction = new Transaction(

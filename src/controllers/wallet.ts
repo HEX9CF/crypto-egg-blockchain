@@ -5,8 +5,8 @@ export function clickGenKey(): void {
     wallet.value.generateKey();
     console.log(wallet.value.privateKey);
     console.log(wallet.value.publicKey);
-    console.log("生成密钥对成功");
-    ElMessage.success("生成密钥对成功");
+    console.log("生成密钥对成功，请保管好私钥");
+    ElMessage.success("生成密钥对成功，请保管好私钥");
 }
 
 export function clickKeyFromPrivate(): void {

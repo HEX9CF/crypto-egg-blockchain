@@ -1,7 +1,7 @@
 import sha256 from 'crypto-js/sha256';
 import { Transaction } from '@/models/transaction';
 
-class Block {
+export class Block {
     transactions: Transaction[];
     previousHash: string;
     timestamp: number;
@@ -60,5 +60,3 @@ class Block {
         return true;
     }
 }
-
-export { Block };

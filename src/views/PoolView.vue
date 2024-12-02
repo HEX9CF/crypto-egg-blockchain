@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {chain} from "@/stores/blockchain";
+import {formatTimestamp} from "@/utils/formatters";
 </script>
 
 <template>
@@ -9,17 +10,14 @@ import {chain} from "@/stores/blockchain";
         <span>交易池</span>
       </div>
     </template>
-    <el-card v-for="(transaction, index) in chain.transactionPool" :key="index" style="margin-bottom: 10px;">
-      <h4>交易{{ index + 1 }}</h4>
-      <p>
-        <span>时间戳: {{ transaction.timestamp }} ({{ new Date(transaction.timestamp).toLocaleString() }})</span><br/>
-        <span>发送方: {{ transaction.from }}</span><br/>
-        <span>接收方: {{ transaction.to }}</span><br/>
-        <span>金额: {{ transaction.amount }}</span><br/>
-        <span>交易信息: {{ transaction.message }}</span><br/>
-        <span>签名: {{ transaction.signature }}</span>
-      </p>
-    </el-card>
+    <el-table :data="chain.transactionPool" stripe border show-overflow-tooltip style="width: 100%" height="400">
+      <el-table-column fixed prop="timestamp" label="时间戳" :formatter="formatTimestamp"/>
+      <el-table-column prop="from" label="发送方"/>
+      <el-table-column prop="to" label="接收方"/>
+      <el-table-column prop="amount" label="金额"/>
+      <el-table-column prop="message" label="交易信息"/>
+      <el-table-column prop="signature" label="签名"/>
+    </el-table>
   </el-card>
 </template>
 
