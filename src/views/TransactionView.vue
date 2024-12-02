@@ -11,7 +11,7 @@ import {clickAddTransaction} from "@/controllers/transaction";
       </div>
     </template>
     <el-form>
-      <el-form-item label="收款人公钥">
+      <el-form-item label="收款地址">
         <el-input v-model="transactionForm.to"></el-input>
       </el-form-item>
       <el-form-item label="转账金额">

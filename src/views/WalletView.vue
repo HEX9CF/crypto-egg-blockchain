@@ -2,7 +2,7 @@
 import {ref} from "vue";
 import {wallet} from "@/stores/wallet";
 import {chain} from "@/stores/blockchain";
-import {formatTimestamp} from "@/utils/formatters";
+import {formatTimestamp} from "@/utils/formatter";
 import {
   clickClearKey,
   clickGenKey,
@@ -23,6 +23,10 @@ const outTransactions = ref(chain.value.getOutTransactions(wallet.value.publicKe
       </div>
     </template>
     <el-row>
+      <span style="font-size: 12px">钱包地址：{{ wallet.publicKey }}</span>
+    </el-row>
+    <br/>
+    <el-row>
       <el-col :span="6">
         <el-statistic title="加密蛋余额" :value="wallet.balance"></el-statistic>
       </el-col>
@@ -36,7 +40,8 @@ const outTransactions = ref(chain.value.getOutTransactions(wallet.value.publicKe
         <el-statistic title="转出交易数" :value="outTransactions.length"></el-statistic>
       </el-col>
     </el-row>
-    <el-row :gutter="20" style="margin-top: 20px;">
+    <el-divider />
+    <el-row :gutter="20">
       <el-col :span="24">
         <el-button type="primary" @click="clickUpdateBalance()">刷新余额</el-button>
       </el-col>

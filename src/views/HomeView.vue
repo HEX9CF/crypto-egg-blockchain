@@ -24,7 +24,7 @@ const colors = [
           <span>虚拟养鸡场</span>
         </div>
       </template>
-      <el-row>
+      <el-row :gutter="20">
         <el-col :span="4">
             <el-progress type="dashboard" :percentage="chicken.progress" :color="colors">
               <template #default="{ percentage }">
@@ -34,12 +34,13 @@ const colors = [
             </el-progress>
         </el-col>
         <el-col :span="20">
-          <div v-for="line in farmEmojiArt">
-            {{ line }}<br/>
-          </div>
+            <div v-for="line in farmEmojiArt">
+              {{ line }}<br/>
+            </div>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 20px">
+      <br/>
+      <el-row>
         <el-col :span="4">
           <el-statistic title="饲料库存" :value="inventory.food"></el-statistic>
         </el-col>
@@ -47,7 +48,8 @@ const colors = [
           <el-statistic title="加密蛋余额" :value="wallet.balance"></el-statistic>
         </el-col>
       </el-row>
-      <el-row :gutter="20" style="margin-top: 20px;">
+      <el-divider />
+      <el-row :gutter="20">
         <el-col :span="24">
           <el-button type="primary" @click="clickGetFood">领取饲料</el-button>
           <el-button type="primary" @click="clickFeed">喂食</el-button>

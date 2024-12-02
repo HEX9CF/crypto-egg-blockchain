@@ -1,10 +1,12 @@
 import {ElMessage} from "element-plus";
 import {wallet} from "@/stores/wallet";
+import {updateFarmEmojiArt} from "@/stores/farm";
 
 export function clickGenKey(): void {
     wallet.value.generateKey();
-    console.log(wallet.value.privateKey);
-    console.log(wallet.value.publicKey);
+    updateFarmEmojiArt();
+    // console.log(wallet.value.privateKey);
+    // console.log(wallet.value.publicKey);
     console.log("生成密钥对成功，请保管好私钥");
     ElMessage.success("生成密钥对成功，请保管好私钥");
 }
@@ -15,17 +17,19 @@ export function clickKeyFromPrivate(): void {
         ElMessage.warning("私钥不能为空！");
         return;
     }
-    if(wallet.value.fromPrivateKey(wallet.value.privateKey)) {
-        console.log("通过私钥导入密钥对成功");
-        ElMessage.success("通过私钥导入密钥对成功");
+    if(!wallet.value.fromPrivateKey(wallet.value.privateKey)) {
+        console.error("通过私钥导入密钥对失败！");
+        ElMessage.error("通过私钥导入密钥对失败！");
         return;
     }
-    console.error("通过私钥导入密钥对失败！");
-    ElMessage.error("通过私钥导入密钥对失败！");
+    updateFarmEmojiArt();
+    console.log("通过私钥导入密钥对成功");
+    ElMessage.success("通过私钥导入密钥对成功");
 }
 
 export function clickClearKey(): void {
     wallet.value.clear();
+    updateFarmEmojiArt();
     console.log("清空密钥对成功");
     ElMessage.success("清空密钥对成功");
 }

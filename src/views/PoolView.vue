@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {chain} from "@/stores/blockchain";
-import {formatTimestamp} from "@/utils/formatters";
+import {formatTimestamp} from "@/utils/formatter";
 </script>
 
 <template>

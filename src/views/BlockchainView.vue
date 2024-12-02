@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import {chain} from "@/stores/blockchain";
 import {clickMine, clickValidateChain} from "@/controllers/blockchain";
-import { formatTimestamp } from "@/utils/formatters";
+import { formatTimestamp } from "@/utils/formatter";
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import { formatTimestamp } from "@/utils/formatters";
     </template>
     <el-row>
       <el-col :span="6">
-        <el-statistic title="难度" :value="chain.difficulty"></el-statistic>
+        <el-statistic title="挖矿难度" :value="chain.difficulty"></el-statistic>
       </el-col>
       <el-col :span="6">
         <el-statistic title="挖矿奖励" :value="chain.minerReward"></el-statistic>
@@ -25,7 +25,8 @@ import { formatTimestamp } from "@/utils/formatters";
         <el-statistic title="交易池大小" :value="chain.transactionPool.length"></el-statistic>
       </el-col>
     </el-row>
-    <el-row :gutter="20" style="margin-top: 20px;">
+    <el-divider />
+    <el-row :gutter="20">
       <el-col :span="24">
         <el-button type="primary" @click="clickValidateChain">验证区块链</el-button>
         <el-button type="primary" @click="clickMine">挖矿</el-button>
