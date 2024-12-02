@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { inventory, chicken } from '@/stores/farm';
+import { inventory, chicken, farmEmojiArt} from '@/stores/farm';
 import {clickGetFood, clickFeed, clickCollectEgg} from '@/controllers/farm';
 import { wallet } from '@/stores/wallet';
 
@@ -10,6 +10,7 @@ const colors = [
   { color: '#1989fa', percentage: 40 },
   { color: '#6f7ad3', percentage: 20 },
 ]
+
 </script>
 
 <template>
@@ -23,13 +24,22 @@ const colors = [
           <span>虚拟养鸡场</span>
         </div>
       </template>
-      <el-progress type="dashboard" :percentage="chicken.progress" :color="colors">
-        <template #default="{ percentage }">
-          <span class="percentage-value">{{ percentage }}%</span>
-          <span class="percentage-label">生蛋进度</span>
-        </template>
-      </el-progress>
       <el-row>
+        <el-col :span="4">
+            <el-progress type="dashboard" :percentage="chicken.progress" :color="colors">
+              <template #default="{ percentage }">
+                <span class="percentage-value">{{ percentage }}%</span>
+                <span class="percentage-label">生蛋进度</span>
+              </template>
+            </el-progress>
+        </el-col>
+        <el-col :span="20">
+          <div v-for="line in farmEmojiArt">
+            {{ line }}<br/>
+          </div>
+        </el-col>
+      </el-row>
+      <el-row style="margin-top: 20px">
         <el-col :span="4">
           <el-statistic title="饲料库存" :value="inventory.food"></el-statistic>
         </el-col>
