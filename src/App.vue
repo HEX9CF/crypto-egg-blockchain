@@ -15,26 +15,19 @@
               class="el-menu-vertical-demo"
               default-active="1"
               text-color="#fff"
+              router
             >
-              <el-menu-item index="1">
-                <router-link to="/">
+              <el-menu-item index="/">
                 <span>养鸡场</span>
-                </router-link>
               </el-menu-item>
-              <el-menu-item index="2">
-                <router-link to="/key">
+              <el-menu-item index="/key">
                 <span>密钥对</span>
-                </router-link>
               </el-menu-item>
-              <el-menu-item index="3">
-                <router-link to="/transaction">
+              <el-menu-item index="/transaction">
                 <span>交易</span>
-                </router-link>
               </el-menu-item>
-              <el-menu-item index="4">
-                <router-link to="/blockchain">
+              <el-menu-item index="/blockchain">
                 <span>区块链</span>
-                </router-link>
               </el-menu-item>
             </el-menu>
           </el-aside>

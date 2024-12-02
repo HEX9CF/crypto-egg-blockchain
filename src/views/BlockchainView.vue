@@ -28,10 +28,8 @@ import {clickMine, clickValidateChain} from "@/controllers/blockchain";
       </el-col>
     </el-row>
     <el-row :gutter="20" style="margin-top: 20px;">
-      <el-col :span="2">
+      <el-col :span="24">
         <el-button type="primary" @click="clickValidateChain">验证区块链</el-button>
-      </el-col>
-      <el-col :span="2">
         <el-button type="primary" @click="clickMine">挖矿</el-button>
       </el-col>
     </el-row>

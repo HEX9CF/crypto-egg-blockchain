@@ -45,13 +45,9 @@ const colors = [
         </el-col>
       </el-row>
       <el-row :gutter="20" style="margin-top: 20px;">
-        <el-col :span="2">
+        <el-col :span="24">
           <el-button type="primary" @click="clickGetFood">领取饲料</el-button>
-        </el-col>
-        <el-col :span="2">
           <el-button type="primary" @click="clickFeed">喂食</el-button>
-        </el-col>
-        <el-col :span="2">
           <el-button type="primary" @click="clickCollectEgg">收蛋</el-button>
         </el-col>
       </el-row>
