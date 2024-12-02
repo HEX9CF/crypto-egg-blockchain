@@ -1,7 +1,7 @@
 import { ElMessage } from 'element-plus';
 import { chicken, inventory } from "@/stores/farm";
 import { chain } from "@/stores/blockchain";
-import { key } from "@/stores/key";
+import { wallet } from "@/stores/wallet";
 
 export function clickGetFood(): void {
   inventory.value.food++;
@@ -27,7 +27,7 @@ export function clickFeed(): void {
 }
 
 export function clickCollectEgg(): void {
-  if (key.value.keyPair === null) {
+  if (wallet.value.keyPair === null) {
     console.error("密钥对不存在！");
     ElMessage.error('密钥对不存在！');
     return;
@@ -39,7 +39,8 @@ export function clickCollectEgg(): void {
     return;
   }
   inventory.value.egg++;
-  chain.value.mineTransactionPool(key.value.publicKey);
+  chain.value.mineTransactionPool(wallet.value.publicKey);
+  wallet.value.updateBalance();
   console.log("收蛋成功");
   ElMessage.success('收蛋成功');
 }

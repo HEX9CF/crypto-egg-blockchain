@@ -20,8 +20,8 @@
               <el-menu-item index="/">
                 <span>养鸡场</span>
               </el-menu-item>
-              <el-menu-item index="/key">
-                <span>密钥对</span>
+              <el-menu-item index="/wallet">
+                <span>钱包</span>
               </el-menu-item>
               <el-menu-item index="/transaction">
                 <span>交易</span>

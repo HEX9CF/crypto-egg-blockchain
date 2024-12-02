@@ -1,11 +1,11 @@
 import {ElMessage} from "element-plus";
 import {transactionForm} from "@/stores/form";
-import {inventory} from "@/stores/farm";
 import {chain} from "@/stores/blockchain";
-import {key} from "@/stores/key";
+import {wallet} from "@/stores/wallet";
+import {Transaction} from "@/models/transaction";
 
 export function clickAddTransaction(): void {
-    if (key.value.keyPair === null) {
+    if (wallet.value.keyPair === null) {
         console.error("密钥对不存在！");
         ElMessage.error("密钥对不存在！");
         return;
@@ -20,20 +20,21 @@ export function clickAddTransaction(): void {
         ElMessage.warning("转账金额必须大于0！");
         return;
     }
-    if (transactionForm.value.amount > inventory.value.egg) {
+    wallet.value.updateBalance();
+    if (transactionForm.value.amount > wallet.value.balance) {
         console.error("余额不足！");
         ElMessage.warning("余额不足！");
         return
     }
     let transaction: Transaction = new Transaction(
-        key.value.publicKey,
+        wallet.value.publicKey,
         transactionForm.value.to,
         transactionForm.value.amount,
         transactionForm.value.message
     );
-    transaction.sign(key.value.keyPair);
+    transaction.sign(wallet.value.keyPair);
     chain.value.addTransaction(transaction);
-    inventory.value.egg -= transactionForm.value.amount;
+    wallet.value.updateBalance();
     console.log("添加交易成功");
     ElMessage.success("添加交易成功");
 }

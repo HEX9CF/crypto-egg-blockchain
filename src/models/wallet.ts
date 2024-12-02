@@ -1,33 +1,50 @@
 import { ec as EC } from 'elliptic';
+import {chain} from "@/stores/blockchain";
 const ec = new EC('secp256k1');
 
-class Key {
+class Wallet {
     keyPair: EC.KeyPair | null;
     privateKey: string;
     publicKey: string;
+    balance: number;
 
     constructor() {
         this.keyPair = null;
         this.privateKey = '';
         this.publicKey = '';
+        this.balance = 0;
     }
 
     // 生成密钥对
-    generate(): void {
+    generateKey(): boolean {
         this.keyPair = ec.genKeyPair();
+        if (!this.keyPair.validate()) {
+            console.log("密钥对无效！");
+            this.keyPair = null;
+            return false;
+        }
         this.privateKey = this.keyPair.getPrivate('hex');
         this.publicKey = this.keyPair.getPublic('hex');
+        this.balance = chain.value.getBalance(this.publicKey);
+        return true;
     }
 
     // 从私钥导入
-    fromPrivate(privateKey: string) {
+    fromPrivateKey(privateKey: string): boolean {
         this.keyPair = ec.keyFromPrivate(privateKey);
+        if (!this.keyPair.validate()) {
+            console.log("私钥无效！");
+            this.keyPair = null;
+            return false;
+        }
         this.privateKey = privateKey;
         this.publicKey = this.keyPair.getPublic('hex');
+        this.balance = chain.value.getBalance(this.publicKey);
+        return true;
     }
 
     // 验证密钥对
-   validate(): boolean {
+   validateKey(): boolean {
         if (this.keyPair === null) {
             return false;
         }
@@ -45,7 +62,19 @@ class Key {
         this.keyPair = null;
         this.privateKey = '';
         this.publicKey = '';
+        this.balance = 0;
+    }
+
+    // 更新余额
+    updateBalance(): boolean {
+        if (this.keyPair === null) {
+            console.log("密钥对不存在！");
+            this.balance = 0;
+            return false;
+        }
+        this.balance = chain.value.getBalance(this.publicKey);
+        return true;
     }
 }
 
-export { Key };
+export { Wallet };

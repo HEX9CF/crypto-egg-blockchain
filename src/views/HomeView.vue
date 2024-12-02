@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { inventory, chicken } from '@/stores/farm';
 import {clickGetFood, clickFeed, clickCollectEgg} from '@/controllers/farm';
+import { wallet } from '@/stores/wallet';
 
 const colors = [
-  { color: '#f56c6c', percentage: 20 },
-  { color: '#e6a23c', percentage: 40 },
+  { color: '#f56c6c', percentage: 100 },
+  { color: '#e6a23c', percentage: 80 },
   { color: '#5cb87a', percentage: 60 },
-  { color: '#1989fa', percentage: 80 },
-  { color: '#6f7ad3', percentage: 100 },
+  { color: '#1989fa', percentage: 40 },
+  { color: '#6f7ad3', percentage: 20 },
 ]
 </script>
 
@@ -33,7 +34,7 @@ const colors = [
           <el-statistic title="饲料库存" :value="inventory.food"></el-statistic>
         </el-col>
         <el-col :span="4">
-          <el-statistic title="加密蛋库存" :value="inventory.egg"></el-statistic>
+          <el-statistic title="加密蛋余额" :value="wallet.balance"></el-statistic>
         </el-col>
       </el-row>
       <el-row :gutter="20" style="margin-top: 20px;">

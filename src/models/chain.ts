@@ -1,5 +1,6 @@
 import { Block } from '@/models/block';
 import { Transaction } from '@/models/transaction';
+import {Wallet} from "@/models/wallet";
 
 class Chain {
     blocks: Block[];
@@ -34,10 +35,10 @@ class Chain {
     }
 
     // 挖矿
-    mineTransactionPool(minerAddress: string) {
+    mineTransactionPool(minerAddress: string): boolean {
         if (minerAddress === '') {
             console.error('矿工地址不能为空！');
-            return
+            return false;
         }
         if (this.minerReward !== 0) {
             // 发放奖励
@@ -50,24 +51,26 @@ class Chain {
         newBlock.mine(this.difficulty);
         this.addBlock(newBlock);
         this.transactionPool = [];
+        return true;
     }
 
     // 添加交易
-    addTransaction(transaction: Transaction): void {
+    addTransaction(transaction: Transaction): boolean {
         if (!transaction.validate()) {
             console.error('非法交易！');
-            return;
+            return false;
         }
         if (transaction.from === transaction.to) {
             console.error('不能给自己转账！');
-            return;
+            return false;
         }
         if (transaction.amount <= 0) {
             console.error('交易金额不能为0！');
-            return
+            return false;
         }
         console.log('交易已添加至交易池');
         this.transactionPool.push(transaction);
+        return true;
     }
 
     // 验证区块链
@@ -96,6 +99,22 @@ class Chain {
             }
         }
         return true;
+    }
+
+    getBalance(address: string): number {
+        let balance: number = 0;
+        for (const block of this.blocks) {
+            for (const transaction of block.transactions) {
+                if (transaction.from === address) {
+                    balance -= transaction.amount;
+                }
+                if (transaction.to === address) {
+                    balance += transaction.amount;
+                }
+            }
+        }
+
+        return balance
     }
 }
 
