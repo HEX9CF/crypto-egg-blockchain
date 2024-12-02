@@ -51,7 +51,15 @@ const colors = [
           <el-button type="primary" @click="clickCollectEgg">收蛋</el-button>
         </el-col>
       </el-row>
-      <el-row style="margin-top: 20px;">
+    </el-card>
+    <br/>
+    <el-card>
+      <template #header>
+        <div class="card-header">
+          <span>捐赠</span>
+        </div>
+      </template>
+      <el-row :gutter="20">
         <el-col :span="8">
           <el-form>
             <el-form-item label="捐蛋数量">
