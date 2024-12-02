@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {transactionForm} from "@/stores/blockchain";
-import {clickAddTransaction} from "@/controllers/blockchain";
+import {transactionForm} from "@/stores/form";
+import {clickAddTransaction} from "@/controllers/transaction";
 </script>
 
 <template>

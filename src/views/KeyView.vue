@@ -1,7 +1,6 @@
 <script setup lang="ts">
-
-import {key} from "@/stores/blockchain";
-import {clickClearKey, clickGenKey, clickKeyFromPrivate, clickValidateKey} from "@/controllers/blockchain";
+import {key} from "@/stores/key";
+import {clickClearKey, clickGenKey, clickKeyFromPrivate, clickValidateKey} from "@/controllers/key";
 </script>
 
 <template>

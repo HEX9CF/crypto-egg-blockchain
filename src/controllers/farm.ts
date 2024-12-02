@@ -1,14 +1,15 @@
 import { ElMessage } from 'element-plus';
 import { chicken, inventory } from "@/stores/farm";
-import { chain, key } from "@/stores/blockchain";
+import { chain } from "@/stores/blockchain";
+import { key } from "@/stores/key";
 
-function clickGetFood(): void {
+export function clickGetFood(): void {
   inventory.value.food++;
   console.log("领取饲料成功");
   ElMessage.success('领取饲料成功');
 }
 
-function clickFeed(): void {
+export function clickFeed(): void {
   if (inventory.value.food <= 0) {
     console.error("饲料不足，请先领取饲料！");
     ElMessage.warning('饲料不足，请先领取饲料！');
@@ -25,7 +26,7 @@ function clickFeed(): void {
   ElMessage.success('喂食成功，进度增加：' + delta + '%');
 }
 
-function clickCollectEgg(): void {
+export function clickCollectEgg(): void {
   if (key.value.keyPair === null) {
     console.error("密钥对不存在！");
     ElMessage.error('密钥对不存在！');
@@ -42,9 +43,3 @@ function clickCollectEgg(): void {
   console.log("收蛋成功");
   ElMessage.success('收蛋成功');
 }
-
-export {
-  clickGetFood,
-  clickFeed,
-  clickCollectEgg,
-};

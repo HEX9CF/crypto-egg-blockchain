@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import {
-  clickGetFood,
-  clickFeed,
-  clickCollectEgg,
-} from '@/controllers/farm';
-
 import { inventory, chicken } from '@/stores/farm';
+import {clickGetFood, clickFeed, clickCollectEgg} from '@/controllers/farm';
 
 const colors = [
   { color: '#f56c6c', percentage: 20 },
