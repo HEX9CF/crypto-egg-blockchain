@@ -26,21 +26,26 @@ export function clickFeed(): void {
   ElMessage.success('喂食成功，进度增加：' + delta + '%');
 }
 
-export function clickCollectEgg(): void {
+export async function clickCollectEgg(): Promise<void> {
   if (wallet.value.keyPair === null) {
     console.error("密钥对不存在！");
     ElMessage.error('密钥对不存在！');
     return;
   }
-  let collected: boolean = chicken.value.collectEgg();
-  if (!collected) {
+  if (!chicken.value.collectEgg()) {
     console.error("收蛋失败，生蛋进度不足！");
     ElMessage.warning('收蛋失败，生蛋进度不足！');
     return;
   }
-  inventory.value.egg++;
-  chain.value.mineTransactionPool(wallet.value.publicKey);
-  wallet.value.updateBalance();
-  console.log("收蛋成功");
-  ElMessage.success('收蛋成功');
+  await chain.value.mineTransactionPool(wallet.value.publicKey).then((val: boolean): void => {
+      if (!val) {
+        console.error("收蛋失败！");
+        ElMessage.error('收蛋失败！');
+        return;
+      }
+      wallet.value.updateBalance();
+      console.log("收蛋成功");
+      ElMessage.success('收蛋成功');
+    }
+  );
 }

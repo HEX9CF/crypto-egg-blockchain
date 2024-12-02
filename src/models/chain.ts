@@ -35,23 +35,25 @@ export class Chain {
     }
 
     // 挖矿
-    mineTransactionPool(minerAddress: string): boolean {
-        if (minerAddress === '') {
-            console.error('矿工地址不能为空！');
-            return false;
-        }
-        if (this.minerReward !== 0) {
-            // 发放奖励
-            const rewardTransaction = new Transaction('', minerAddress, this.minerReward, "矿工奖励");
-            this.transactionPool.push(rewardTransaction);
-        }
+    async mineTransactionPool(minerAddress: string): Promise<boolean> {
+        return new Promise((resolve, reject) => {
+            if (minerAddress === '') {
+                console.error('矿工地址不能为空！');
+                reject(false);
+            }
+            if (this.minerReward !== 0) {
+                // 发放奖励
+                const rewardTransaction = new Transaction('', minerAddress, this.minerReward, "矿工奖励");
+                this.transactionPool.push(rewardTransaction);
+            }
 
-        // 挖矿
-        const newBlock = new Block(this.transactionPool);
-        newBlock.mine(this.difficulty);
-        this.addBlock(newBlock);
-        this.transactionPool = [];
-        return true;
+            // 挖矿
+            const newBlock = new Block(this.transactionPool);
+            newBlock.mine(this.difficulty);
+            this.addBlock(newBlock);
+            this.transactionPool = [];
+            resolve(true);
+        });
     }
 
     // 添加交易
@@ -102,6 +104,9 @@ export class Chain {
     }
 
     getBalance(address: string): number {
+        if (address.length === 0) {
+            return 0;
+        }
         let balance: number = 0;
         for (const block of this.blocks) {
             for (const transaction of block.transactions) {
@@ -125,6 +130,9 @@ export class Chain {
     }
 
     getOutTransactions(address: string): Transaction[] {
+        if (address.length === 0) {
+            return [];
+        }
         let transactions: Transaction[] = [];
         for (const block of this.blocks) {
             for (const transaction of block.transactions) {
@@ -142,6 +150,9 @@ export class Chain {
     }
 
     getInTransactions(address: string): Transaction[] {
+        if (address.length === 0) {
+            return [];
+        }
         let transactions: Transaction[] = [];
         for (const block of this.blocks) {
             for (const transaction of block.transactions) {

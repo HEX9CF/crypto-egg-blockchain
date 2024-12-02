@@ -46,11 +46,10 @@ export function clickUpdateBalance(): void {
         ElMessage.error("密钥对不存在！");
         return;
     }
-    if (wallet.value.updateBalance()) {
-        console.log("更新余额成功");
-        ElMessage.success("更新余额成功");
-        return;
+    if (!wallet.value.updateBalance()) {
+        console.log("刷新余额失败！");
+        ElMessage.error("刷新余额失败！");
     }
-    console.log("更新余额失败");
-    ElMessage.error("更新余额失败");
+    console.log("刷新余额成功");
+    ElMessage.success("刷新余额成功");
 }
