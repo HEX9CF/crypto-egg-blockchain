@@ -4,6 +4,8 @@ import 'element-plus/dist/index.css'
 import App from './App.vue'
 import router from "@/router";
 
+// 暗黑模式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 const app = createApp(App)
 
