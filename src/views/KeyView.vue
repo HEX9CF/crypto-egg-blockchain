@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import {message} from "@/stores/message";
 import {key} from "@/stores/blockchain";
 import {clickClearKey, clickGenKey, clickKeyFromPrivate, clickValidateKey} from "@/controllers/blockchain";
 </script>
@@ -12,7 +11,6 @@ import {clickClearKey, clickGenKey, clickKeyFromPrivate, clickValidateKey} from 
         <span>密钥对</span>
       </div>
     </template>
-    <el-alert v-if="message.key !== ''" :title="message.key" type="info" show-icon></el-alert><br/>
     <el-form>
       <el-form-item label="私钥">
         <el-input v-model="key.privateKey"></el-input>

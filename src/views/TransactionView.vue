@@ -1,6 +1,5 @@
 <script setup lang="ts">
 
-import {message} from "@/stores/message";
 import {transactionForm} from "@/stores/blockchain";
 import {clickAddTransaction} from "@/controllers/blockchain";
 </script>
@@ -12,7 +11,6 @@ import {clickAddTransaction} from "@/controllers/blockchain";
         <span>交易</span>
       </div>
     </template>
-    <el-alert v-if="message.transaction !== ''" :title="message.transaction" type="info" show-icon></el-alert><br/>
     <el-form>
       <el-form-item label="收款人公钥">
         <el-input v-model="transactionForm.to"></el-input>

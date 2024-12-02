@@ -6,7 +6,6 @@ import {
   clickDonateEgg
 } from '@/controllers/farm';
 
-import { message } from '@/stores/message';
 import { inventory, chicken, donateForm } from '@/stores/farm';
 
 const colors = [
@@ -29,7 +28,6 @@ const colors = [
           <span>虚拟养鸡场</span>
         </div>
       </template>
-      <el-alert v-if="message.farm !== ''" :title="message.farm" type="info" show-icon></el-alert><br/>
       <el-progress type="dashboard" :percentage="chicken.progress" :color="colors">
         <template #default="{ percentage }">
           <span class="percentage-value">{{ percentage }}%</span>

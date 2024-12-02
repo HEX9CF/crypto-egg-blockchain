@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import {message} from "@/stores/message";
 import {chain} from "@/stores/blockchain";
 import {clickMine, clickValidateChain} from "@/controllers/blockchain";
 </script>
@@ -11,7 +10,6 @@ import {clickMine, clickValidateChain} from "@/controllers/blockchain";
         <span>区块链</span>
       </div>
     </template>
-    <el-alert v-if="message.block !== ''" :title="message.block" type="info" show-icon style="margin-top: 20px;"></el-alert><br/>
     <el-row>
       <el-col :span="6">
         <el-statistic title="难度" :value="chain.difficulty"></el-statistic>
