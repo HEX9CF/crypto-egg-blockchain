@@ -6,8 +6,5 @@ const inventory = ref({
     food: 0,
     egg: 0
 });
-const donateForm = ref({
-    amount: 0
-})
 
-export { chicken, inventory, donateForm };
+export { chicken, inventory };

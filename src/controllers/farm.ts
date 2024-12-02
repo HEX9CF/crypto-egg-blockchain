@@ -1,6 +1,5 @@
 import { ElMessage } from 'element-plus';
-import { Transaction } from "@/models/transaction";
-import { chicken, inventory, donateForm } from "@/stores/farm";
+import { chicken, inventory } from "@/stores/farm";
 import { chain, key } from "@/stores/blockchain";
 
 function clickGetFood(): void {
@@ -44,43 +43,8 @@ function clickCollectEgg(): void {
   ElMessage.success('收蛋成功');
 }
 
-function clickDonateEgg(): void {
-  if (inventory.value.egg <= 0) {
-    console.error("没有可捐赠的蛋，请先收蛋！");
-    ElMessage.warning('没有可捐赠的蛋，请先收蛋！');
-    return;
-  }
-  if (donateForm.value.amount <= 0) {
-    console.error("捐赠数量必须大于0！");
-    ElMessage.warning('捐赠数量必须大于0！');
-    return;
-  }
-  if (donateForm.value.amount > inventory.value.egg) {
-    console.error("余额不足！");
-    ElMessage.warning("余额不足！");
-    return
-  }
-  if (key.value.keyPair === null) {
-    console.error("密钥对不存在！");
-    ElMessage.error('密钥对不存在！');
-    return;
-  }
-  let transaction: Transaction = new Transaction(
-      key.value.publicKey,
-      "",
-      donateForm.value.amount,
-      "捐蛋",
-  );
-  transaction.sign(key.value.keyPair);
-  chain.value.addTransaction(transaction);
-  inventory.value.egg -= donateForm.value.amount;
-  console.log("添加交易成功");
-  ElMessage.success('添加交易成功');
-}
-
 export {
   clickGetFood,
   clickFeed,
   clickCollectEgg,
-  clickDonateEgg
 };

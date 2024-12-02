@@ -3,10 +3,9 @@ import {
   clickGetFood,
   clickFeed,
   clickCollectEgg,
-  clickDonateEgg
 } from '@/controllers/farm';
 
-import { inventory, chicken, donateForm } from '@/stores/farm';
+import { inventory, chicken } from '@/stores/farm';
 
 const colors = [
   { color: '#f56c6c', percentage: 20 },
@@ -47,24 +46,6 @@ const colors = [
           <el-button type="primary" @click="clickGetFood">领取饲料</el-button>
           <el-button type="primary" @click="clickFeed">喂食</el-button>
           <el-button type="primary" @click="clickCollectEgg">收蛋</el-button>
-        </el-col>
-      </el-row>
-    </el-card>
-    <br/>
-    <el-card>
-      <template #header>
-        <div class="card-header">
-          <span>捐赠</span>
-        </div>
-      </template>
-      <el-row :gutter="20">
-        <el-col :span="8">
-          <el-form>
-            <el-form-item label="捐蛋数量">
-              <el-input v-model="donateForm.amount"></el-input>
-            </el-form-item>
-            <el-button type="primary" @click="clickDonateEgg">捐蛋</el-button>
-          </el-form>
         </el-col>
       </el-row>
     </el-card>
