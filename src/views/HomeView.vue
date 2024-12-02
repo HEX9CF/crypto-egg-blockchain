@@ -30,7 +30,7 @@ const colors = [
         </div>
       </template>
       <el-alert v-if="message.farm !== ''" :title="message.farm" type="info" show-icon></el-alert><br/>
-      <el-progress type="dashboard" :percentage="chicken.progress">
+      <el-progress type="dashboard" :percentage="chicken.progress" :color="colors">
         <template #default="{ percentage }">
           <span class="percentage-value">{{ percentage }}%</span>
           <span class="percentage-label">生蛋进度</span>

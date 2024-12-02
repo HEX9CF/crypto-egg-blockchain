@@ -29,6 +29,9 @@
               <el-menu-item index="/blockchain">
                 <span>区块链</span>
               </el-menu-item>
+              <el-menu-item index="/pool">
+                <span>交易池</span>
+              </el-menu-item>
             </el-menu>
           </el-aside>
         <el-main>

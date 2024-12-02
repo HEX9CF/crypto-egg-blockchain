@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {message} from "@/stores/message";
 import {chain} from "@/stores/blockchain";
 import {clickMine, clickValidateChain} from "@/controllers/blockchain";
@@ -33,8 +32,14 @@ import {clickMine, clickValidateChain} from "@/controllers/blockchain";
         <el-button type="primary" @click="clickMine">挖矿</el-button>
       </el-col>
     </el-row>
-    <div v-if="chain.blocks.length > 0" style="margin-top: 20px;">
-      <h2>区块列表</h2>
+  </el-card>
+  <br/>
+  <el-card v-if="chain.blocks.length > 0">
+    <template #header>
+      <div class="card-header">
+        <span>区块列表</span>
+      </div>
+    </template>
       <el-timeline>
         <el-timeline-item v-for="(block, index) in chain.blocks" :timestamp="new Date(block.timestamp).toLocaleString()" placement="top">
           <el-card>
@@ -61,21 +66,6 @@ import {clickMine, clickValidateChain} from "@/controllers/blockchain";
           </el-card>
         </el-timeline-item>
       </el-timeline>
-      <div v-if="chain.transactionPool.length > 0">
-        <h2>交易池列表</h2>
-        <el-card v-for="(transaction, index) in chain.transactionPool" :key="index" style="margin-bottom: 10px;">
-          <h3>交易{{ index + 1 }}</h3>
-          <p>
-            <span>时间戳: {{ transaction.timestamp }} ({{ new Date(transaction.timestamp).toLocaleString() }})</span><br/>
-            <span>发送方: {{ transaction.from }}</span><br/>
-            <span>接收方: {{ transaction.to }}</span><br/>
-            <span>金额: {{ transaction.amount }}</span><br/>
-            <span>交易信息: {{ transaction.message }}</span><br/>
-            <span>签名: {{ transaction.signature }}</span>
-          </p>
-        </el-card>
-      </div>
-    </div>
   </el-card>
 </template>
 
