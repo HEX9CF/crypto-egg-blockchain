@@ -9,7 +9,7 @@ import {clickClearKey, clickGenKey, clickKeyFromPrivate, clickValidateKey} from 
   <el-card>
     <template #header>
       <div class="card-header">
-        <span>钱包</span>
+        <span>密钥对</span>
       </div>
     </template>
     <el-alert v-if="message.key !== ''" :title="message.key" type="info" show-icon></el-alert><br/>
