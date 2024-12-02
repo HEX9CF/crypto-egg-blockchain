@@ -175,15 +175,15 @@ const colors = [
               <div v-if="block.transactions.length > 0">
                 <hr/>
                 <h4>交易列表</h4>
-                <p v-for="(transaction, index) in block.transactions" :key="index">
+                <div v-for="(transaction, index) in block.transactions" :key="index">
                   <h5>交易{{ index + 1 }}</h5>
                   <span>时间戳: {{ transaction.timestamp }} ({{ new Date(transaction.timestamp).toLocaleString() }})</span><br/>
                   <span>发送方: {{ transaction.from }}</span><br/>
                   <span>接收方: {{ transaction.to }}</span><br/>
                   <span>金额: {{ transaction.amount }}</span><br/>
                   <span>交易信息: {{ transaction.message }}</span><br/>
-                  <span>签名: {{ transaction.signature }}</span>
-                </p>
+                  <span>签名: {{ transaction.signature }}</span><br/>
+                </div>
               </div>
             </el-card>
           </el-timeline-item>
