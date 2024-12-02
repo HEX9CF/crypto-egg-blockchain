@@ -12,7 +12,8 @@
     "crypto-js": "^4.2.0",
     "element-plus": "^2.8.8",
     "elliptic": "^6.6.1",
-    "vue": "^3.5.12"
+    "vue": "^3.5.12",
+    "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.1.4",
