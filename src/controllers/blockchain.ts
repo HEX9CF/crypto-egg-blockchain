@@ -1,6 +1,7 @@
 import { ElMessage } from 'element-plus';
 import { Transaction } from '@/models/transaction';
 import { chain, key, transactionForm } from '@/stores/blockchain';
+import {inventory} from "@/stores/farm";
 
 function clickGenKey(): void {
     key.value.generate();
@@ -53,6 +54,11 @@ function clickAddTransaction(): void {
         ElMessage.warning("转账金额必须大于0！");
         return;
     }
+    if (transactionForm.value.amount > inventory.value.egg) {
+        console.error("余额不足！");
+        ElMessage.warning("余额不足！");
+        return
+    }
     let transaction: Transaction = new Transaction(
         key.value.publicKey,
         transactionForm.value.to,
@@ -61,6 +67,7 @@ function clickAddTransaction(): void {
     );
     transaction.sign(key.value.keyPair);
     chain.value.addTransaction(transaction);
+    inventory.value.egg -= transactionForm.value.amount;
     console.log("添加交易成功");
     ElMessage.success("添加交易成功");
 }

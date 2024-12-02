@@ -56,9 +56,9 @@ function clickDonateEgg(): void {
     return;
   }
   if (donateForm.value.amount > inventory.value.egg) {
-    console.error("捐赠数量不能大于库存数量！");
-    ElMessage.warning('捐赠数量不能大于库存数量！');
-    return;
+    console.error("余额不足！");
+    ElMessage.warning("余额不足！");
+    return
   }
   if (key.value.keyPair === null) {
     console.error("密钥对不存在！");

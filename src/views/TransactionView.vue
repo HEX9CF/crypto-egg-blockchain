@@ -1,5 +1,4 @@
 <script setup lang="ts">
-
 import {transactionForm} from "@/stores/blockchain";
 import {clickAddTransaction} from "@/controllers/blockchain";
 </script>
