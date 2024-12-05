@@ -65,3 +65,10 @@ npm run build
 
 1. **创建交易**：用户可以输入收款人公钥、转账金额和交易信息，并点击“添加交易”按钮，系统会将交易添加到交易池中。
 
+## 运行效果
+
+![image](https://github.com/user-attachments/assets/fbb0d1ea-2f30-49ac-a53b-507ed9d29791)
+
+![image](https://github.com/user-attachments/assets/25cdec39-5222-4e84-a066-81e8ed3ce507)
+
+![image](https://github.com/user-attachments/assets/91ecf45c-e83f-42bb-a413-ebd6727cd8f8)
